@@ -18,7 +18,7 @@ class CheckHost
     {
         try{
             $error = 1;
-            $domains = array('127.0.0.1','localhost', '10.145.121.38');
+            $domains = array('127.0.0.1','localhost', 'http://menage.eageskool.com/');
             foreach($domains as $domain)
             {
                 if (strpos($_SERVER['SERVER_NAME'], $domain) !== false)
