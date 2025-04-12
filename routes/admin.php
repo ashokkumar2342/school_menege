@@ -1,7 +1,7 @@
 <?php
 
 
-Route::group(['middleware' => ['preventBackHistory','web']], function() {
+// Route::group(['middleware' => ['preventBackHistory','web']], function() {
 	Route::get('login', 'Auth\LoginController@login')->name('admin.login'); 
 	Route::post('logout', 'Auth\LoginController@logout')->name('admin.logout.get');
 	Route::get('logout_time', 'Auth\LoginController@logout')->name('admin.logout_time.get');
@@ -9,7 +9,7 @@ Route::group(['middleware' => ['preventBackHistory','web']], function() {
 	Route::post('login-post', 'Auth\LoginController@loginPost')->name('admin.login.post');
 
 	Route::get('payment/{s_code}', 'OnlinePaymentController@payment')->name('admin.online.payment');
-});
+// });
 
 Route::group(['middleware' => ['preventBackHistory','admin','web']], function() {
 	Route::get('dashboard', 'DashboardController@index')->name('admin.dashboard');
