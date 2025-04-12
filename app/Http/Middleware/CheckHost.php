@@ -29,7 +29,7 @@ class CheckHost
             }
             if ($error>0)
             {
-                return response()->view('error.denied');
+                return response()->view('error.home');
             }else{
                 return $next($request);
             }
