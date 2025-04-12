@@ -13,7 +13,7 @@ class TrustHosts extends Middleware
     public function hosts()
     {
         return [
-            'localhost','127.0.0.1','menage.eageskool.com',$this->allSubdomainsOfApplicationUrl(),
+            'localhost','127.0.0.1','manage.eageskool.com',$this->allSubdomainsOfApplicationUrl(),
         ];
     
     }

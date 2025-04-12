@@ -63,7 +63,7 @@ class MyFuncs {
 
     // $rs_fetch = DB::select(DB::raw("SELECT `web_url` from `schoolinfo` limit 1;"));
     // $web_url = $rs_fetch[0]->web_url;
-    $web_url = "menage.eageskool.com";
+    $web_url = "manage.eageskool.com";
 
     $http_host =  $_SERVER['HTTP_HOST'];
     if(($http_host != $web_url) && ($http_host != 'localhost:80') && ($http_host != 'localhost:81') && ($http_host != 'localhost')){
@@ -350,7 +350,7 @@ class MyFuncs {
       // return false;  
     }
     $http_host =  $_SERVER['HTTP_HOST'];
-    if(($http_host != 'menage.eageskool.com') && ($http_host != 'localhost') && ($http_host != 'localhost:81')){
+    if(($http_host != 'manage.eageskool.com') && ($http_host != 'localhost') && ($http_host != 'localhost:81')){
       return false;
       return Redirect::route('logout')->with(['error_msg' => 'Unauthorised Access to Application !!']);
     }
