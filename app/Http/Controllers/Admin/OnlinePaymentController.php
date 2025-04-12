@@ -18,6 +18,7 @@ class OnlinePaymentController extends Controller
     {
         try {
             $s_code = intval($s_code);
+            return redirect()->away('https://vaishmodelschoolbhiwani.com/newadmin/fee-pay-index');
             if ($s_code == 1000) {
                 return redirect()->away('https://vaishmodelschoolbhiwani.com/newadmin/fee-pay-index');
             }else{
