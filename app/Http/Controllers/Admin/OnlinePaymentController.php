@@ -47,7 +47,7 @@ class OnlinePaymentController extends Controller
             $final_url = $status[2].$status[3];
             return redirect()->away($final_url);
              
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $e_method = "payment";
             // return MyFuncs::Exception_error_handler($this->e_controller, $e_method, $e->getMessage());
         }
