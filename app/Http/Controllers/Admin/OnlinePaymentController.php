@@ -49,7 +49,7 @@ class OnlinePaymentController extends Controller
              
         } catch (\Exception $e) {
             $e_method = "payment";
-            return MyFuncs::Exception_error_handler($this->e_controller, $e_method, $e->getMessage());
+            // return MyFuncs::Exception_error_handler($this->e_controller, $e_method, $e->getMessage());
         }
     }
 
