@@ -85,7 +85,7 @@ class OnlinePaymentController extends Controller
         $status[3] = $rs_fetch[0]->online_fee_url;
 
         $status[0] = 1;
-        $return_end:
+        return_end:
             $rs_insert = DB::select(DB::raw("INSERT into `log_hit_online_fee_url`(`from_ip`, `code`, `regis_no`, `upto_month`, `upto_year`, `dob`, `log_time`, `status`) values ('$from_ip', '$code', '$regis_no', $upto_month, $upto_year, '$dob', now(), $status[0]);"));
 
         return $status;
