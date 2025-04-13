@@ -41,7 +41,7 @@ class OnlinePaymentController extends Controller
 
             $status = $this->insert_hit_record($from_ip, $school_code, $registration_no, $upto_month, $upto_year, $dob_complete);
             if($status[0] == 0){
-                return 'Something went wrong';                
+                return $status[1];                
             }
             
             $final_url = $status[2].$status[3];
@@ -68,17 +68,17 @@ class OnlinePaymentController extends Controller
         $rs_fetch = DB::select(DB::raw("SELECT `url`, `online_fee_url` from `admin_school_information` where `code` = '$code' limit 1;"));
         if(count($rs_fetch) == 0){
             goto return_end;
-            $status[1] = 'Something Went Wrong';
+            $status[1] = 'Something Went Wrong-01';
         }
         if(($upto_month == 0) || ($upto_year == 0)){
             goto return_end;
-            $status[1] = 'Something Went Wrong';    
+            $status[1] = 'Something Went Wrong-02';    
         }
 
         $temp_date = MyFuncs::check_valid_date($dob);
         if($temp_date[0] == 0){
             goto return_end;
-            $status[1] = 'Something Went Wrong';
+            $status[1] = 'Something Went Wrong-03';
         }
         
         $status[2] = $rs_fetch[0]->url;
