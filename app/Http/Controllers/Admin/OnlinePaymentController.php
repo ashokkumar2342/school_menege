@@ -65,7 +65,7 @@ class OnlinePaymentController extends Controller
         if(($upto_year)> (date('Y') + 1)){
             $upto_year = 0;
         }
-        $rs_fetch = DB::select(DB::raw("SELECT `url`, `online_fee_url` from `admin_school_information` where `code` = '$school_code' limit 1;"));
+        $rs_fetch = DB::select(DB::raw("SELECT `url`, `online_fee_url` from `admin_school_information` where `code` = '$code' limit 1;"));
         if(count($rs_fetch) == 0){
             goto return_end;
             $status[1] = 'Something Went Wrong';
