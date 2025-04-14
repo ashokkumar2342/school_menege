@@ -18,12 +18,12 @@ class OnlinePaymentController extends Controller
     {
         try {
 
-            $len_variable = intval(substr($param_values, 0, 2));
-            $param_values = substr($param_values, 2);
+            $len_variable = intval(substr($param_values, 1, 2));
+            $param_values = substr($param_values, 3);
             $school_code = substr($param_values, 0, $len_variable);
             $param_values = substr($param_values, $len_variable);
 
-            $send_param_values = $param_values;
+            $send_param_values = "0".$param_values;
 
             $len_variable = intval(substr($param_values, 0, 2));
             $param_values = substr($param_values, 2);
