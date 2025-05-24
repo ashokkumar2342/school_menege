@@ -33,7 +33,7 @@ class SupportController extends Controller
                 return view('admin.common.error');
             }          
             return view('admin.support.desk.index');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $e_method = "deskIndex";
             return MyFuncs::Exception_error_handler($this->e_controller, $e_method, $e->getMessage());
         }

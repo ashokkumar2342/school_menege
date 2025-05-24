@@ -84,6 +84,13 @@ class MyFuncs {
     return false;
   }
 
+  public static function getClasses()
+  {
+    $result_rs = DB::select(DB::raw("SELECT `ct`.`id` as `opt_id`, `ct`.`name` as `opt_text` from `class_types` `ct` where `ct`.`status` = 1 order by `ct`.`shorting_id`;"));
+    return $result_rs;
+    
+  }
+
   public static function getUserId()
   {
     return $user = Auth::guard('admin')->user()->id;  

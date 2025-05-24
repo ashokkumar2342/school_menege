@@ -24,6 +24,55 @@ Route::group(['middleware' => ['preventBackHistory','admin','web']], function() 
 		
 	});
 
+	//Class create (11)
+	Route::group(['prefix' => 'class'], function() {
+	    Route::get('ct_list', 'ClassTypeController@index')->name('admin.class.index');
+	    Route::get('ct_edit/{id}', 'ClassTypeController@edit')->name('admin.class.edit');
+	    Route::post('ct_update/{id}', 'ClassTypeController@update')->name('admin.class.update');
+	    Route::get('ct_deleteclass/{id}', 'ClassTypeController@deleteclass')->name('admin.class.deleteclass');
+	});
+
+	//Suject Type (12)
+	Route::group(['prefix' => 'subject-type'], function() {
+    	Route::get('sub_type_list', 'SubjectTypeController@index')->name('admin.subjectType.index');
+		Route::get('sub_type_edit/{id}', 'SubjectTypeController@edit')->name('admin.subjectType.edit');
+   		Route::post('update/{id}', 'SubjectTypeController@update')->name('admin.subjectType.update');
+   		Route::get('sub_type_delete/{id}', 'SubjectTypeController@destroy')->name('admin.subjectType.delete');
+   		Route::get('sub_type_pdf-generate', 'SubjectTypeController@pdfGenerate')->name('admin.subjectType.pdf.generate');
+ 
+	});
+	//Class Subject (13)
+	Route::group(['prefix' => 'subject'], function() {
+    	Route::get('cl_sub_list', 'SubjectController@index')->name('admin.subject.manageSubject,index');
+    	Route::get('cl_sub_list_search', 'SubjectController@search')->name('admin.subject.search');
+    	Route::post('cl_sub_list_add', 'SubjectController@store')->name('admin.subject.add');
+    	Route::get('cl_sub_list_delete/{id}', 'SubjectController@destroy')->name('admin.manageSubject.delete');
+	});
+
+	//chapter (14)
+	Route::group(['prefix' => 'chapter'], function() {
+		Route::get('cmnctl-ctsub/{conditionId?}', 'ChapterController@classWiseSubject')->name('admin.common.class.wise.subjects');
+		Route::get('get-chapter/{conditionId?}', 'ChapterController@subjectWiseChapter')->name('admin.common.subjects.wise.chapter');
+		Route::get('video-viewer/{path}', 'ChapterController@video_viewer')->name('admin.common.video.view');
+
+		Route::get('index', 'ChapterController@index')->name('admin.chapter.index');
+		Route::get('table', 'ChapterController@table')->name('admin.chapter.table');
+		Route::post('store', 'ChapterController@store')->name('admin.chapter.store');
+		Route::get('edit/{rec_id}', 'ChapterController@edit')->name('admin.chapter.edit');
+		Route::post('update/{rec_id}', 'ChapterController@update')->name('admin.chapter.update');
+		Route::get('delete/{rec_id}', 'ChapterController@delete')->name('admin.chapter.delete');
+		
+	});
+
+	//upload video (15)
+	Route::group(['prefix' => 'video'], function() {
+		Route::get('index', 'VideoController@index')->name('admin.video.index');
+		Route::get('table', 'VideoController@table')->name('admin.video.table');
+		Route::post('store', 'VideoController@store')->name('admin.video.store');
+		Route::get('delete/{rec_id}', 'VideoController@delete')->name('admin.video.delete');
+		
+	});
+
 	// Support
 	Route::group(['prefix' => 'support'], function() {
 		// Feedback/Help/Error (751)
