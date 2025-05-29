@@ -17,7 +17,7 @@ class FrameHeadersMiddleware
     {
         $response = $next($request);
         $response->headers->remove('X-Frame-Options');
-        $response->headers->set('X-Frame-Options', 'ALLOW-FROM', 'manage.eageskool.com', '10.145.121.38');
+        $response->headers->set('X-Frame-Options', 'ALLOW-FROM', 'https://manage.eageskool.com/', 'https://demo.eageskool.com/');
 
         
         return $response;
