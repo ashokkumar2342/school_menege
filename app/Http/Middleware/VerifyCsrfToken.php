@@ -15,5 +15,7 @@ class VerifyCsrfToken extends Middleware
         'payment/paytm-callback',
         'getvideo',
         'stremvideo'
+        'getpdf',
+        'strempdf'
     ];
 }
