@@ -16,7 +16,7 @@ class SecureHeaders
         $response->headers->set('Referrer-Policy', 'no-referrer-when-downgrade');
         $response->headers->set('X-Content-Type-Options', 'nosniff');
         $response->headers->set('X-XSS-Protection', '1; mode=block');
-        $response->headers->set('X-Frame-Options', 'SAMEORIGIN');
+        $response->headers->set('X-Frame-Options', 'ALLOWALL');
         $response->headers->set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
         // $response->headers->set('Content-Security-Policy', "default-src 'self' 'unsafe-inline' 'unsafe-eval' code.ionicframework.com fonts.googleapis.com fonts.gstatic.com cdn.datatables.net cdn.jsdelivr.net cdnjs.cloudflare.com edmshry.nic.in 164.100.200.54");
         $response->headers->set('Content-Security-Policy', "font-src 'self' data:; style-src 'self' 'unsafe-inline' 'unsafe-eval' manage.eageskool.com");
