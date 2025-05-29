@@ -56,6 +56,23 @@ class ChapterController extends Controller
         }    
     }
 
+    public function pdf_viewer($pdfFilePath)
+    {
+        try {
+            $l_act_file_path = Crypt::decrypt($pdfFilePath);
+            $storagePath = storage_path($l_act_file_path);          
+            if(file_exists($storagePath)){
+                $mimeType = mime_content_type($storagePath);
+                return response()->file($storagePath);
+            }else{
+                return 'File Not Found';
+            }
+        } catch (\Exception $e) {
+            $e_method = "pdf_viewer";
+            return MyFuncs::Exception_error_handler($this->e_controller, $e_method, $e->getMessage());
+        }        
+    }
+
     public function index()
     { 
         try {

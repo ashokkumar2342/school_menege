@@ -19,8 +19,7 @@ class ApiController extends Controller
     public function getvideo()
     {
        try {
-            $videos = DB::table('videos')->get(); // cleaner than raw query
-            //$videos = DB::select(DB::raw("SELECT * FROM `videos`"));
+            $videos = DB::select(DB::raw("SELECT * FROM `videos`"));
 
             $data = [];
             $data['status'] = 1;
@@ -39,7 +38,7 @@ class ApiController extends Controller
     {
        try {
             // $rec_id = $paramiter;
-            $rec_id = 1;
+            $rec_id = $paramiter;
             $videos = DB::select(DB::raw("SELECT * FROM `videos` where `id` = $rec_id;"));
             $path = $videos[0]->video_path;
             $storagePath = Storage_path() . '/app/'.$path;
@@ -58,6 +57,43 @@ class ApiController extends Controller
             
         } catch (Exception $e) {
             $e_method = "getvideo";
+            return MyFuncs::Exception_error_handler($this->e_controller, $e_method, $e->getMessage());
+        }
+    }
+
+    public function getpdf()
+    {
+       try {
+            $pdfs = DB::select(DB::raw("SELECT * FROM `pdfs`"));
+            $data = [];
+            $data['status'] = 1;
+            $data['msg'] = 'success';
+            $data['data'] = $pdfs;
+            return response()->json($pdfs);
+            
+        } catch (Exception $e) {
+            $e_method = "getpdf";
+            return MyFuncs::Exception_error_handler($this->e_controller, $e_method, $e->getMessage());
+        }
+    }
+
+    public function strempdf($paramiter)
+    {
+       try {
+            $rec_id = 1;
+            $pdfs = DB::select(DB::raw("SELECT * FROM `pdfs` where `id` = $rec_id;"));
+            $path = 'app/'.$pdfs[0]->pdf_path;
+
+            $storagePath = storage_path($path);          
+            if(file_exists($storagePath)){
+                $mimeType = mime_content_type($storagePath);
+                return response()->file($storagePath);
+            }else{
+                return 'File Not Found';
+            }
+            
+        } catch (Exception $e) {
+            $e_method = "strempdf";
             return MyFuncs::Exception_error_handler($this->e_controller, $e_method, $e->getMessage());
         }
     }
