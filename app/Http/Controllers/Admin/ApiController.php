@@ -40,14 +40,14 @@ class ApiController extends Controller
         }
     }
 
-    public function getschapter($subject_id)
+    public function getchapter($subject_id)
     {
        try {
             $rs_chapter = DB::select(DB::raw("SELECT `id` as `opt_id`, `chapter_topic_name` as `opt_text` from `chapter_topic` where `subjectType_id` = $subject_id;"));
             return response()->json($rs_chapter);
             
         } catch (Exception $e) {
-            $e_method = "getschapter";
+            $e_method = "getchapter";
             return MyFuncs::Exception_error_handler($this->e_controller, $e_method, $e->getMessage());
         }
     }
