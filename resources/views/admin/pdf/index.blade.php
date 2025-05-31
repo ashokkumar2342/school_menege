@@ -59,6 +59,22 @@
                     </div>                    
                 </div>
                 <div class="row">
+                    <div class="col-lg-6">                         
+                        <div class="form-group">
+                        <label>Title</label>
+                        <span class="fa fa-asterisk"></span>
+                            <textarea name="title" class="form-control" required placeholder="Please Enter Title" maxlength="250"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">                         
+                        <div class="form-group">
+                        <label>Description</label>
+                        <span class="fa fa-asterisk"></span>
+                            <textarea name="description" class="form-control" required placeholder="Please Enter Description" maxlength="500"></textarea>
+                        </div>
+                    </div>                    
+                </div>
+                <div class="row">
                     <div class="col-lg-12 text-center">
                         <input type="submit" class="btn btn-primary" value="Upload">
                     </div>
@@ -77,6 +93,11 @@
     </div>
 </section>
 @endsection
+@push('scripts')
+    <script>
+        document.addEventListener('contextmenu', event => event.preventDefault());
+    </script>
+@endpush
 
 
 

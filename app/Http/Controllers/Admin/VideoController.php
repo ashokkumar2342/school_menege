@@ -61,11 +61,15 @@ class VideoController extends Controller
                 'subject' => 'required', 
                 'chpater' => 'required',
                 'video' => 'required|file|mimes:mp4,mov,ogg,qt|max:500000', // Max 500MB
+                'title' => 'required',
+                'description' => 'required',
             ];
             $customMessages = [
                 'class.required'=> 'Please Select Class',
                 'subject.required'=> 'Please Select Subject',
                 'chpater.required'=> 'Please Enter Chapter/Topic Name',
+                'title.required'=> 'Please Enter Title',
+                'description.required'=> 'Please Enter Description',
             ];
             $validator = Validator::make($request->all(),$rules, $customMessages);
             if ($validator->fails()) {
@@ -79,6 +83,8 @@ class VideoController extends Controller
             $subject_id = intval(Crypt::decrypt($request->subject));
             $chpater_id = intval(Crypt::decrypt($request->chpater));
             $video = $request->video;
+            $title = substr(MyFuncs::removeSpacialChr($request->title), 0, 250);
+            $description = substr(MyFuncs::removeSpacialChr($request->description), 0, 500);
 
             $extension = $video->getClientOriginalExtension();
 
@@ -91,7 +97,7 @@ class VideoController extends Controller
 
             $video->storeAs($folder_path, $filename);
                       
-            $rs_update = DB::select(DB::raw("INSERT into `videos`(`classType_id`, `subjectType_id`, `chapter_id`, `video_path`) values($class_id, $subject_id, '$chpater_id', '$final_path_video');"));
+            $rs_update = DB::select(DB::raw("INSERT into `videos`(`classType_id`, `subjectType_id`, `chapter_id`, `video_path`, `title`, `description`) values($class_id, $subject_id, '$chpater_id', '$final_path_video', '$title', '$description');"));
 
             $response=['status'=>1,'msg'=>'Upload Successfully'];
             return response()->json($response);
@@ -147,11 +153,15 @@ class VideoController extends Controller
                 'subject' => 'required', 
                 'chpater' => 'required',
                 'pdf_file' => 'required|mimes:pdf|max:10240', // max size in KB (10MB here)
+                'title' => 'required',
+                'description' => 'required',
             ];
             $customMessages = [
                 'class.required'=> 'Please Select Class',
                 'subject.required'=> 'Please Select Subject',
                 'chpater.required'=> 'Please Enter Chapter/Topic Name',
+                'title.required'=> 'Please Enter Title',
+                'description.required'=> 'Please Enter Description',
             ];
             $validator = Validator::make($request->all(),$rules, $customMessages);
             if ($validator->fails()) {
@@ -164,7 +174,9 @@ class VideoController extends Controller
             $class_id = intval(Crypt::decrypt($request->class));            
             $subject_id = intval(Crypt::decrypt($request->subject));
             $chpater_id = intval(Crypt::decrypt($request->chpater));
-            $pdf = $request->pdf_file;            
+            $pdf = $request->pdf_file;
+            $title = substr(MyFuncs::removeSpacialChr($request->title), 0, 250);
+            $description = substr(MyFuncs::removeSpacialChr($request->description), 0, 500);        
 
             // Create unique filename with extension
             $filename = date('dmYHis').'.pdf';
@@ -175,7 +187,7 @@ class VideoController extends Controller
 
             $pdf->storeAs($folder_path, $filename);
                       
-            $rs_update = DB::select(DB::raw("INSERT into `pdfs`(`classType_id`, `subjectType_id`, `chapter_id`, `pdf_path`) values($class_id, $subject_id, '$chpater_id', '$final_path_pdf');"));
+            $rs_update = DB::select(DB::raw("INSERT into `pdfs`(`classType_id`, `subjectType_id`, `chapter_id`, `pdf_path`, `title`, `description`) values($class_id, $subject_id, '$chpater_id', '$final_path_pdf', '$title', '$description');"));
 
             $response=['status'=>1,'msg'=>'Upload Successfully'];
             return response()->json($response);
