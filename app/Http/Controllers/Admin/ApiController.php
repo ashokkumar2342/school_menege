@@ -16,16 +16,10 @@ class ApiController extends Controller
 {
     protected $e_controller = "ApiController";
     
-    public function getvideo()
+    public function getvideo($chapter_id)
     {
        try {
-            $videos = DB::select(DB::raw("SELECT * FROM `videos`"));
-
-            $data = [];
-            $data['status'] = 1;
-            $data['msg'] = 'success';
-            $data['data'] = $videos;
-
+            $videos = DB::select(DB::raw("SELECT * FROM `videos` where `id` = $chapter_id;"));
             return response()->json($videos);
             
         } catch (Exception $e) {
@@ -65,10 +59,6 @@ class ApiController extends Controller
     {
        try {
             $pdfs = DB::select(DB::raw("SELECT * FROM `pdfs`"));
-            $data = [];
-            $data['status'] = 1;
-            $data['msg'] = 'success';
-            $data['data'] = $pdfs;
             return response()->json($pdfs);
             
         } catch (Exception $e) {
