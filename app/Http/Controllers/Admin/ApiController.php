@@ -16,6 +16,42 @@ class ApiController extends Controller
 {
     protected $e_controller = "ApiController";
     
+    public function getclass()
+    {
+       try {
+            $classes = MyFuncs::getClasses();
+            return response()->json($classes);
+            
+        } catch (Exception $e) {
+            $e_method = "getclass";
+            return MyFuncs::Exception_error_handler($this->e_controller, $e_method, $e->getMessage());
+        }
+    }
+
+    public function getsubject($class_id)
+    {
+       try {
+            $rs_subjects = DB::select(DB::raw("SELECT `sbt`.`id` as `opt_id`, concat(`sbt`.`name`, ' - ', case `sub`.`isoptional_id` when 1 then 'Compulsory' else 'Optional' end) as `opt_text` from `subjects` `sub` inner join `subject_types` `sbt` on `sbt`.`id` = `sub`.`subjectType_id` where `sub`.`classType_id` = $class_id and `sub`.`status` = 1 order by `sbt`.`sorting_order_id`;"));
+            return response()->json($rs_subjects);
+            
+        } catch (Exception $e) {
+            $e_method = "getsubject";
+            return MyFuncs::Exception_error_handler($this->e_controller, $e_method, $e->getMessage());
+        }
+    }
+
+    public function getschapter($subject_id)
+    {
+       try {
+            $rs_chapter = DB::select(DB::raw("SELECT `id` as `opt_id`, `chapter_topic_name` as `opt_text` from `chapter_topic` where `subjectType_id` = $subject_id;"));
+            return response()->json($rs_chapter);
+            
+        } catch (Exception $e) {
+            $e_method = "getschapter";
+            return MyFuncs::Exception_error_handler($this->e_controller, $e_method, $e->getMessage());
+        }
+    }
+
     public function getvideo($chapter_id)
     {
        try {
