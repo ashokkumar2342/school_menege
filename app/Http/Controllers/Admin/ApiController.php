@@ -55,10 +55,10 @@ class ApiController extends Controller
         }
     }
 
-    public function getpdf()
+    public function getpdf($chapter_id)
     {
        try {
-            $pdfs = DB::select(DB::raw("SELECT * FROM `pdfs`"));
+            $pdfs = DB::select(DB::raw("SELECT * FROM `pdfs` where `id` = $chapter_id;"));
             return response()->json($pdfs);
             
         } catch (Exception $e) {
@@ -70,7 +70,7 @@ class ApiController extends Controller
     public function strempdf($paramiter)
     {
        try {
-            $rec_id = 1;
+            $rec_id = $paramiter;
             $pdfs = DB::select(DB::raw("SELECT * FROM `pdfs` where `id` = $rec_id;"));
             $path = 'app/'.$pdfs[0]->pdf_path;
 
