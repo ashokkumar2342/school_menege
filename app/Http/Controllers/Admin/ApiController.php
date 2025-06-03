@@ -16,6 +16,18 @@ class ApiController extends Controller
 {
     protected $e_controller = "ApiController";
     
+    public function getuserdetails()
+    {
+       try {
+            $rs_user_details = DB::select(DB::raw("SELECT * FROM `user_details`;"));
+            return response()->json($rs_user_details);
+            
+        } catch (Exception $e) {
+            $e_method = "getclass";
+            return MyFuncs::Exception_error_handler($this->e_controller, $e_method, $e->getMessage());
+        }
+    }
+
     public function getclass()
     {
        try {

@@ -9,6 +9,7 @@ Route::get('/', function () {
  	// return view('admin.auth.login');
 });
 
+Route::get('getuserdetails', 'Admin\ApiController@getuserdetails')->name('admin.api.getuserdetails');
 Route::get('getclass', 'Admin\ApiController@getclass')->name('admin.api.getclass');
 Route::get('getsubject/{class_id}', 'Admin\ApiController@getsubject')->name('admin.api.getsubject');
 Route::get('getschapter/{subject_id}', 'Admin\ApiController@getchapter')->name('admin.api.getchapter');
