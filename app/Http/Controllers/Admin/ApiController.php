@@ -114,6 +114,7 @@ public function strem_video(Request $request)
         $allowedHost = "manage.eageskool.com";
        // dd($allowedHost);
         $referer = $request->headers->get('referer');
+        dd($referer);
         // dd(parse_url($referer, PHP_URL_HOST));
         if (parse_url($referer, PHP_URL_HOST) != $allowedHost) {
             dd(parse_url($referer, PHP_URL_HOST), $allowedHost);
