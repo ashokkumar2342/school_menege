@@ -118,7 +118,7 @@ public function strem_video(Request $request)
         // dd(parse_url($referer, PHP_URL_HOST));
         if ($refererUrl !== $allowedHost) {
             // dd(parse_url($referer, PHP_URL_HOST), $allowedHost);
-            abort(403, 'Unauthorized access.');
+           return 'Unauthorized access';
         }
         dd($refererUrl !== $allowedHost);
 
