@@ -34,15 +34,10 @@ class VideoController extends Controller
     public function video_table(Request $request)
     {
         try {
+            
             $id = intval(Crypt::decrypt($request->id));
-            $AppUserManuals = DB::select(DB::raw("SELECT * from `videos` where `chapter_id` = $id;"));
-
-            $token = bin2hex(random_bytes(16)); // Random token
-            $data['id'] = $id;
-            $data['AppUserManuals'] = $AppUserManuals;
-            $data['signedUrl'] = url('viewvideo/stream') . '/' . Crypt::encrypt($id) . '/' . $token;
-
-            return view('admin.video.table', $data);
+            $rs_videos = DB::select(DB::raw("SELECT * from `videos` where `chapter_id` = $id;"));
+            return view('admin.video.table', compact('rs_videos'));
         } catch (Exception $e) {
             $e_method = "video_table";
             return MyFuncs::Exception_error_handler($this->e_controller, $e_method, $e->getMessage());

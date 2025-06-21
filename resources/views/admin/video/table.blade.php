@@ -16,14 +16,20 @@
         data-bs-dismiss="modal" id="close_btn_manual">×</button>
 
     <div class="modal-body" style="padding-bottom: 0px; padding-top: 0px;">
-        <div class="row">
-            <div id="player">
-                <video id="manualVideoPlayer" style="width:100%;" controls playsinline autoplay poster="" controlsList="nodownload">
-                    <source src="{{ $signedUrl }}" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
+        @foreach ($rs_videos as $rs_val)
+            @php
+                $token = bin2hex(random_bytes(16)); // Random token
+                $url = url('viewvideo/stream') . '/' . Crypt::encrypt($rs_val->id) . '/' . $token;   
+            @endphp            
+            <div class="row">
+                <div id="player">
+                    <video id="manualVideoPlayer" style="width:100%;" controls playsinline autoplay poster="" controlsList="nodownload">
+                        <source src="{{ $url }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
             </div>
-        </div>
+        @endforeach
     </div>
 </div>
 @php
