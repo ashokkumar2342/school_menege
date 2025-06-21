@@ -19,16 +19,12 @@
         @foreach ($rs_videos as $rs_val)
             @php
                 $token = bin2hex(random_bytes(16)); // Random token
-                $url = url('viewvideo/stream') . '/' . Crypt::encrypt($rs_val->id) . '/' . $token;  
-                $allowedHost = parse_url('https://manage.eageskool.com', PHP_URL_HOST);
-                $referer = $request->headers->get('referer');
-                // dd('d');
-                    // dd($referer, $allowedHost); 
+                $url = url('viewvideo/stream') . '/' . Crypt::encrypt($rs_val->id) . '/' . $token;   
             @endphp            
             <div class="row">
                 <div id="player">
-                    <video id="manualVideoPlayer" style="width:100%;" controls playsinline autoplay poster="" controlsList="nodownload">
-                        <source src="{{ $referer }}{{ $allowedHost }}" type="video/mp4">
+                    <video class="manualVideoPlayer" style="width:100%;" controls playsinline autoplay poster="" controlsList="nodownload">
+                        <source src="{{ $url }}" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
                 </div>
@@ -41,30 +37,9 @@
 @endphp
 
 <script type="text/javascript">
-    $(document).ready(function () {
-        $("#close_btn_manual").click(function () {
-            $("#manualVideoPlayer").get(0).pause();
-        });
-    });
+   
 
-    $(document).ready(function () {
-        const video = $("#manualVideoPlayer")[0];
-        const time = {{ $timestamp }};
-
-        function playAtTime() {
-            video.currentTime = time;
-            video.play().catch(err => console.error('Playback error:', err));
-        }
-
-        if (video.readyState >= 2) {
-            playAtTime();
-        } else {
-            video.addEventListener('loadedmetadata', function handler() {
-                playAtTime();
-                video.removeEventListener('loadedmetadata', handler);
-            });
-        }
-    });
+    
 </script>
 
 
