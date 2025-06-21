@@ -103,6 +103,36 @@ class ApiController extends Controller
         }
     }
 
+    // Securely stream the video file
+public function strem_video(Request $request)
+{
+    try {
+
+        $rec_id = Crypt::decrypt($request->id);
+        $token = $request->token;
+
+        $allowedHost = parse_url('http://manage.eageskool.com', PHP_URL_HOST);
+        $referer = $request->headers->get('referer');
+
+        if (parse_url($referer, PHP_URL_HOST) !== $allowedHost) {
+            abort(403, 'Unauthorized access.');
+        }
+
+        $videos = DB::select(DB::raw("SELECT * FROM `videos` where `id` = 2;"));
+        $url = $videos[0]->video_path;
+        $storagePath = storage_path('app/' . $url);
+
+        if (!\File::exists($storagePath)) {
+            return view('error.home');
+        }
+
+        return response()->file($storagePath);
+    } catch (Exception $e) {
+        Log::error('UserManualController-videoStream: ' . $e->getMessage());
+        return view('error.home');
+    }
+}
+
     public function getpdf($chapter_id)
     {
        try {

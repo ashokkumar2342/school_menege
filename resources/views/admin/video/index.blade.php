@@ -95,8 +95,9 @@
 </section>
 @endsection
 @push('scripts')
+
     <script>
-        document.addEventListener('contextmenu', event => event.preventDefault());
+        // document.addEventListener('contextmenu', event => event.preventDefault());
     </script>
 @endpush
 

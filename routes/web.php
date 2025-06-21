@@ -17,6 +17,8 @@ Route::get('getschapter/{subject_id}', 'Admin\ApiController@getchapter')->name('
 Route::get('getvideo/{chapter_id}', 'Admin\ApiController@getvideo')->name('admin.api.getvideo');
 Route::get('stremvideo/{paramiter}', 'Admin\ApiController@stremvideo')->name('admin.api.stremvideo');
 
+Route::get('viewvideo/stream/{id}/{token}', 'Admin\ApiController@strem_video')->name('admin.viewvideo.stream');
+
 Route::get('getpdf/{chapter_id}', 'Admin\ApiController@getpdf')->name('admin.api.getpdf');
 Route::get('strempdf/{paramiter}', 'Admin\ApiController@strempdf')->name('admin.api.strempdf');
 
