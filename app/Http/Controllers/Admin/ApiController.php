@@ -116,7 +116,7 @@ public function strem_video(Request $request)
         // dd(parse_url($referer, PHP_URL_HOST));
         if (parse_url($referer, PHP_URL_HOST) !== $allowedHost) {
             dd(parse_url($referer, PHP_URL_HOST));
-            abort(403, 'Unauthorized access.');
+            // abort(403, 'Unauthorized access.');
         }
 
         $videos = DB::select(DB::raw("SELECT * FROM `videos` where `id` = $rec_id;"));
