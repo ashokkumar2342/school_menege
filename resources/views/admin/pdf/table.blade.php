@@ -5,11 +5,11 @@
                 <h5 class="card-title">{{ $rs_val->title }}</h5>
             </div>
             <div class="card-body">
-                <iframe 
+              {{--   <iframe 
                     src="{{ route('admin.common.pdf.view2', Crypt::encrypt('app/'.$rs_val->pdf_path)) }}" 
                     width="100%" 
                     height="400px"
-                ></iframe>
+                ></iframe> --}}
                
               {{--   <iframe 
     src="{{ asset('pdfjs/web/viewer.html') }}?file={{ route('admin.common.pdf.view', Crypt::encrypt('app/' . $rs_val->pdf_path)) }}&disableDownload=true&disablePrint=true&toolbar=0"
@@ -17,8 +17,15 @@
     height="700px"
     style="border: none;">
 </iframe> --}}
-<iframe 
+{{-- <iframe 
     src="{{ url('pdfjs/web/viewer.html') }}?file={{ urlencode(route('admin.common.pdf.view2', Crypt::encrypt('app/' . $rs_val->pdf_path))) }}&disableDownload=true&disablePrint=true"
+    width="100%" 
+    height="700px" 
+    style="border: none;">
+</iframe>
+ --}}
+<iframe 
+    src="{{ url('pdfjs/web/viewer.html') }}?file={{ urlencode(route('admin.common.pdf.view', Crypt::encrypt('app/' . $rs_val->pdf_path))) }}&disableDownload=true&disablePrint=true"
     width="100%" 
     height="700px" 
     style="border: none;">

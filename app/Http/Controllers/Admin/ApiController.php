@@ -170,24 +170,31 @@ public function strem_video(Request $request)
         }
     }
 
-    public function securePdfView($encryptedPath)
-        {
-            // dd('d');
-            try {
-                $relativePath = Crypt::decrypt($encryptedPath); // e.g., app/pdf/sample.pdf
-                $fullPath = storage_path($relativePath);
+    public function securePdfView($encryptedPath, Request $request)
+    {
+        try {
+            $referer = $request->headers->get('referer');
+            $allowedHosts = ['manage.eageskool.com', '127.0.0.1', 'localhost'];
 
-                if (!\File::exists($fullPath)) {
-                    abort(404, 'PDF not found');
-                }
-
-                return response()->file($fullPath, [
-                    'Content-Type' => 'application/pdf',
-                    'Content-Disposition' => 'inline; filename="secure.pdf"',
-                ]);
-            } catch (\Exception $e) {
-                return abort(403, 'Invalid or expired link');
+            if (!$referer || !in_array(parse_url($referer, PHP_URL_HOST), $allowedHosts)) {
+                abort(403, 'Unauthorized access.');
             }
+
+            $relativePath = Crypt::decrypt($encryptedPath);
+            $fullPath = storage_path($relativePath);
+
+            if (!\File::exists($fullPath)) {
+                abort(404, 'PDF not found');
+            }
+
+            return response()->file($fullPath, [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="secure.pdf"',
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('securePdfView failed: ' . $e->getMessage());
+            return abort(403, 'Invalid or expired link');
         }
+    }
 
 }
