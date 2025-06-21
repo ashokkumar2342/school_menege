@@ -19,7 +19,11 @@
         @foreach ($rs_videos as $rs_val)
             @php
                 $token = bin2hex(random_bytes(16)); // Random token
-                $url = url('viewvideo/stream') . '/' . Crypt::encrypt($rs_val->id) . '/' . $token;   
+                $url = url('viewvideo/stream') . '/' . Crypt::encrypt($rs_val->id) . '/' . $token;  
+                $allowedHost = parse_url('https://manage.eageskool.com', PHP_URL_HOST);
+                $referer = $request->headers->get('referer');
+                // dd('d');
+                    dd($referer, $allowedHost); 
             @endphp            
             <div class="row">
                 <div id="player">
