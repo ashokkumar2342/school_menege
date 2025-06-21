@@ -34,7 +34,7 @@ class VideoController extends Controller
     public function video_table(Request $request)
     {
         try {
-            
+
             $id = intval(Crypt::decrypt($request->id));
             $rs_videos = DB::select(DB::raw("SELECT * from `videos` where `chapter_id` = $id;"));
             return view('admin.video.table', compact('rs_videos'));
@@ -124,7 +124,7 @@ class VideoController extends Controller
                 return view('admin.common.error');
             }
             $classes = MyFuncs::getClasses();  
-            return view('admin.pdf.tez',compact('classes'));
+            return view('admin.pdf.index',compact('classes'));
         } catch (\Exception $e) {
             $e_method = "pdf_index";
             return MyFuncs::Exception_error_handler($this->e_controller, $e_method, $e->getMessage());
