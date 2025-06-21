@@ -23,12 +23,12 @@
                 $allowedHost = parse_url('https://manage.eageskool.com', PHP_URL_HOST);
                 $referer = $request->headers->get('referer');
                 // dd('d');
-                    dd($referer, $allowedHost); 
+                    // dd($referer, $allowedHost); 
             @endphp            
             <div class="row">
                 <div id="player">
                     <video id="manualVideoPlayer" style="width:100%;" controls playsinline autoplay poster="" controlsList="nodownload">
-                        <source src="{{ $url }}" type="video/mp4">
+                        <source src="{{ $referer }}{{ $allowedHost }}" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
                 </div>
