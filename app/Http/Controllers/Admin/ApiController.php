@@ -114,9 +114,9 @@ public function strem_video(Request $request)
         $allowedHost = parse_url('manage.eageskool.com', PHP_URL_HOST);
         $referer = $request->headers->get('referer');
 
-        // if (parse_url($referer, PHP_URL_HOST) !== $allowedHost) {
-        //     abort(403, 'Unauthorized access.');
-        // }
+        if (parse_url($referer, PHP_URL_HOST) !== $allowedHost) {
+            abort(403, 'Unauthorized access.');
+        }
 
         $videos = DB::select(DB::raw("SELECT * FROM `videos` where `id` = $rec_id;"));
         $url = $videos[0]->video_path;
