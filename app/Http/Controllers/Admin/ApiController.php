@@ -111,15 +111,12 @@ public function strem_video(Request $request)
         $rec_id = Crypt::decrypt($request->id);
         $token = $request->token;
 
-        $allowedHost = 'manage.eageskool.com';
+        $allowedHost = parse_url('https://manage.eageskool.com', PHP_URL_HOST);
         $referer = $request->headers->get('referer');
-        $refererUrl = parse_url($referer, PHP_URL_HOST);
-         // dd(parse_url($referer, PHP_URL_HOST), $allowedHost);
-        // dd(parse_url($referer, PHP_URL_HOST));
-        dd($refererUrl !== $allowedHost, $refererUrl, $allowedHost);
-        if ($refererUrl !== $allowedHost) {
-            // dd(parse_url($referer, PHP_URL_HOST), $allowedHost);
-           return 'Unauthorized access';
+
+        if (parse_url($referer, PHP_URL_HOST) !== $allowedHost) {
+            dd(parse_url($referer, PHP_URL_HOST) !== $allowedHost);
+            // abort(403, 'Unauthorized access.');
         }
 
         $videos = DB::select(DB::raw("SELECT * FROM `videos` where `id` = $rec_id;"));
