@@ -21,7 +21,7 @@ Route::get('viewvideo/stream/{id}/{token}', 'Admin\ApiController@strem_video')->
 
 Route::get('getpdf/{chapter_id}', 'Admin\ApiController@getpdf')->name('admin.api.getpdf');
 Route::get('strempdf/{paramiter}', 'Admin\ApiController@strempdf')->name('admin.api.strempdf');
-
+Route::get('/pdf/view/{encryptedPath}', 'Admin\ApiController@securePdfView')->name('admin.common.pdf.view2');
 
 
 

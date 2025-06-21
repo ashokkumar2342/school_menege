@@ -170,4 +170,24 @@ public function strem_video(Request $request)
         }
     }
 
+    public function securePdfView($encryptedPath)
+        {
+            // dd('d');
+            try {
+                $relativePath = Crypt::decrypt($encryptedPath); // e.g., app/pdf/sample.pdf
+                $fullPath = storage_path($relativePath);
+
+                if (!\File::exists($fullPath)) {
+                    abort(404, 'PDF not found');
+                }
+
+                return response()->file($fullPath, [
+                    'Content-Type' => 'application/pdf',
+                    'Content-Disposition' => 'inline; filename="secure.pdf"',
+                ]);
+            } catch (\Exception $e) {
+                return abort(403, 'Invalid or expired link');
+            }
+        }
+
 }

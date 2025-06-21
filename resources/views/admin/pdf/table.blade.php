@@ -6,10 +6,23 @@
             </div>
             <div class="card-body">
                 <iframe 
-                    src="{{ route('admin.common.pdf.view', Crypt::encrypt('app/'.$rs_val->pdf_path)) }}" 
+                    src="{{ route('admin.common.pdf.view2', Crypt::encrypt('app/'.$rs_val->pdf_path)) }}" 
                     width="100%" 
                     height="400px"
                 ></iframe>
+               
+              {{--   <iframe 
+    src="{{ asset('pdfjs/web/viewer.html') }}?file={{ route('admin.common.pdf.view', Crypt::encrypt('app/' . $rs_val->pdf_path)) }}&disableDownload=true&disablePrint=true&toolbar=0"
+    width="100%"
+    height="700px"
+    style="border: none;">
+</iframe> --}}
+<iframe 
+    src="{{ url('pdfjs/web/viewer.html') }}?file={{ urlencode(route('admin.common.pdf.view2', Crypt::encrypt('app/' . $rs_val->pdf_path))) }}&disableDownload=true&disablePrint=true"
+    width="100%" 
+    height="700px" 
+    style="border: none;">
+</iframe>
                 <p class="mt-2">{{$rs_val->description }}</p>
             </div>
         </div>
