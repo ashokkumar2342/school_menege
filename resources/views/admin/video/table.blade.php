@@ -23,7 +23,7 @@
             @endphp            
             <div class="row">
                 <div id="player">
-                    <video class="manualVideoPlayer" style="width:100%;" controls playsinline autoplay poster="" controlsList="nodownload">
+                    <video class="manualVideoPlayer" style="width:100%;" controls playsinline poster="" controlsList="nodownload">
                         <source src="{{ $url }}" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
