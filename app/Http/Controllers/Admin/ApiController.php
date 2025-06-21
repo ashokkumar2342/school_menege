@@ -111,7 +111,7 @@ public function strem_video(Request $request)
         $rec_id = Crypt::decrypt($request->id);
         $token = $request->token;
 
-        $allowedHost = parse_url("https://manage.eageskool.com", PHP_URL_HOST);
+        $allowedHost = 'manage.eageskool.com';
         $referer = $request->headers->get('referer');
         $refererUrl = parse_url($referer, PHP_URL_HOST);
          // dd(parse_url($referer, PHP_URL_HOST), $allowedHost);
