@@ -101,7 +101,7 @@ class ApiController extends Controller
     public function getpdf($chapter_id)
     {
        try {
-            $pdfs = DB::select(DB::raw("SELECT * FROM `pdfs` where `id` = $chapter_id;"));
+            $pdfs = DB::select(DB::raw("SELECT * FROM `pdfs` where `chapter_id` = $chapter_id;"));
             return response()->json($pdfs);
             
         } catch (Exception $e) {
