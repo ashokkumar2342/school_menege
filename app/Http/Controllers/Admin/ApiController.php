@@ -55,7 +55,7 @@ class ApiController extends Controller
     public function getvideo($chapter_id)
     {
        try {
-            $videos = DB::select(DB::raw("SELECT * FROM `videos` where `id` = $chapter_id;"));
+            $videos = DB::select(DB::raw("SELECT * FROM `videos` where `chapter_id` = $chapter_id;"));
             return response()->json($videos);
         } catch (Exception $e) {
             $e_method = "getvideo";
