@@ -23,7 +23,7 @@
                         <div class="form-group">
                             <label>Class</label>
                             <span class="fa fa-asterisk"></span>
-                            <select name="class" class="form-control select2" id="select_class_box" data-table-new-without-pagination="true" onchange="callAjax(this,'{{route('admin.common.class.wise.subjects', 0)}}','subject_select_box');" button-click="btn_show">
+                            <select name="class" class="form-control select2" id="select_class_box" data-table-new-without-pagination="true" onchange="callAjax(this,'{{route('admin.common.class.wise.subjects')}}','subject_select_box');" button-click="btn_show">
                                 <option selected value="{{Crypt::encrypt(0)}}">Select Class</option>  
                                 @foreach ($classes as $val_rec)
                                     <option value="{{Crypt::encrypt($val_rec->opt_id)}}">{{$val_rec->opt_text}}</option>  
@@ -35,7 +35,7 @@
                         <div class="form-group">
                             <label>Subject</label>
                             <span class="fa fa-asterisk"></span>
-                            <select name="subject" class="form-control select2" id="subject_select_box" onchange="callAjax(this,'{{route('admin.common.subjects.wise.chapter', 0)}}','chapter_select_box');">
+                            <select name="subject" class="form-control select2" id="subject_select_box" onchange="callAjax(this,'{{route('admin.common.subjects.wise.chapter')}}'+'?class_id='+$('#select_class_box').val()+'&subject_id='+$('#subject_select_box').val(),'chapter_select_box');">
                                  
                             </select> 
                         </div>

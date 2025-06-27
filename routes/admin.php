@@ -51,11 +51,6 @@ Route::group(['middleware' => ['preventBackHistory','admin','web']], function() 
 
 	//chapter (14)
 	Route::group(['prefix' => 'chapter'], function() {
-		Route::get('cmnctl-ctsub/{conditionId?}', 'ChapterController@classWiseSubject')->name('admin.common.class.wise.subjects');
-		Route::get('get-chapter/{conditionId?}', 'ChapterController@subjectWiseChapter')->name('admin.common.subjects.wise.chapter');
-		Route::get('video-viewer/{path}', 'ChapterController@video_viewer')->name('admin.common.video.view');
-		Route::get('pdf-viewer/{path}', 'ChapterController@pdf_viewer')->name('admin.common.pdf.view');
-
 		Route::get('index', 'ChapterController@index')->name('admin.chapter.index');
 		Route::get('table', 'ChapterController@table')->name('admin.chapter.table');
 		Route::post('store', 'ChapterController@store')->name('admin.chapter.store');
@@ -64,6 +59,7 @@ Route::group(['middleware' => ['preventBackHistory','admin','web']], function() 
 		Route::get('delete/{rec_id}', 'ChapterController@delete')->name('admin.chapter.delete');
 		
 	});
+
 
 	//upload video (15)
 	Route::group(['prefix' => 'video'], function() {
@@ -77,6 +73,11 @@ Route::group(['middleware' => ['preventBackHistory','admin','web']], function() 
 		Route::post('p-store', 'VideoController@pdf_store')->name('admin.pdf.store');
 		Route::get('p-delete/{rec_id}', 'VideoController@pdf_delete')->name('admin.pdf.delete');
 		
+	});
+
+	Route::group(['prefix' => 'common'], function() {
+		Route::get('cmnctl-ctsub', 'CommonController@classWiseSubject')->name('admin.common.class.wise.subjects');
+		Route::get('get-chapter', 'CommonController@subjectWiseChapter')->name('admin.common.subjects.wise.chapter');
 	});
 
 	// Support

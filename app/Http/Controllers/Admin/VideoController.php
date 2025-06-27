@@ -42,19 +42,6 @@ class VideoController extends Controller
             $e_method = "video_table";
             return MyFuncs::Exception_error_handler($this->e_controller, $e_method, $e->getMessage());
         }
-        // try {
-        //     $permission_flag = MyFuncs::isPermission_route(15);
-        //     if(!$permission_flag){
-        //         return view('admin.common.error');
-        //     }
-        //     $chapter_id = intval(Crypt::decrypt($request->id));
-
-        //     $rs_result = DB::select(DB::raw("SELECT * from `videos` where `chapter_id` = $chapter_id;"));
-        //     return view('admin.video.table',compact('rs_result'));
-        // } catch (Exception $e) {
-        //     $e_method = "video_table";
-        //     return MyFuncs::Exception_error_handler($this->e_controller, $e_method, $e->getMessage());
-        // }
     }
 
     public function video_store(Request $request)

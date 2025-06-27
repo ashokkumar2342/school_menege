@@ -15,18 +15,6 @@ use App\Helper\SelectBox;
 class ApiController extends Controller
 {
     protected $e_controller = "ApiController";
-    
-    public function getuserdetails()
-    {
-       try {
-            $rs_user_details = DB::select(DB::raw("SELECT * FROM `user_details`;"));
-            return response()->json($rs_user_details);
-            
-        } catch (Exception $e) {
-            $e_method = "getclass";
-            return MyFuncs::Exception_error_handler($this->e_controller, $e_method, $e->getMessage());
-        }
-    }
 
     public function getclass()
     {
@@ -52,10 +40,10 @@ class ApiController extends Controller
         }
     }
 
-    public function getchapter($subject_id)
+    public function getchapter($class_id, $subject_id)
     {
        try {
-            $rs_chapter = DB::select(DB::raw("SELECT `id` as `opt_id`, `chapter_topic_name` as `opt_text` from `chapter_topic` where `subjectType_id` = $subject_id;"));
+            $rs_chapter = DB::select(DB::raw("SELECT `id` as `opt_id`, `chapter_topic_name` as `opt_text` from `chapter_topic` where `classType_id` = $class_id and `subjectType_id` = $subject_id;"));
             return response()->json($rs_chapter);
             
         } catch (Exception $e) {
@@ -69,73 +57,46 @@ class ApiController extends Controller
        try {
             $videos = DB::select(DB::raw("SELECT * FROM `videos` where `id` = $chapter_id;"));
             return response()->json($videos);
-            
         } catch (Exception $e) {
             $e_method = "getvideo";
             return MyFuncs::Exception_error_handler($this->e_controller, $e_method, $e->getMessage());
         }
     }
 
-    public function stremvideo($paramiter)
-    {
-       try {
-            // $rec_id = $paramiter;
-            $rec_id = $paramiter;
-            $videos = DB::select(DB::raw("SELECT * FROM `videos` where `id` = $rec_id;"));
-            $path = $videos[0]->video_path;
-            $storagePath = Storage_path() . '/app/'.$path;
-            if (file_exists($storagePath)) {
-                $mimeType = mime_content_type($storagePath);
-
-                // Return video file inline
-                return response()->file($storagePath, [
-                    'Content-Type' => $mimeType,
-                    'Content-Disposition' => 'inline; filename="' . basename($storagePath) . '"'
-                ]);
-            } else {
-                // File Not Found view
-                return view('error.fnf', compact('storagePath'));
-            }
-            
-        } catch (Exception $e) {
-            $e_method = "getvideo";
-            return MyFuncs::Exception_error_handler($this->e_controller, $e_method, $e->getMessage());
-        }
-    }
-
+    
     // Securely stream the video file
-public function strem_video(Request $request)
-{
-    try {
+    public function strem_video(Request $request)
+    {
+        try {
 
-        $rec_id = Crypt::decrypt($request->id);
-        $token = $request->token;
+            $rec_id = Crypt::decrypt($request->id);
+            $token = $request->token;
 
-        // $allowedHost = parse_url('https://manage.eageskool.com', PHP_URL_HOST);
-        $referer = $request->headers->get('referer');
-        $allowedHosts = ['manage.eageskool.com', '127.0.0.1', 'localhost'];
-        if (!in_array(parse_url($referer, PHP_URL_HOST), $allowedHosts)) {
-            abort(403, 'Unauthorized access.');
-        }
-        // if (parse_url($referer, PHP_URL_HOST) !== $allowedHost) {
-        //     // dd(parse_url($referer, PHP_URL_HOST) !== $allowedHost);
-        //     abort(403, 'Unauthorized access.');
-        // }
+            // $allowedHost = parse_url('https://manage.eageskool.com', PHP_URL_HOST);
+            $referer = $request->headers->get('referer');
+            $allowedHosts = ['manage.eageskool.com', '127.0.0.1', 'localhost'];
+            if (!in_array(parse_url($referer, PHP_URL_HOST), $allowedHosts)) {
+                abort(403, 'Unauthorized access.');
+            }
+            // if (parse_url($referer, PHP_URL_HOST) !== $allowedHost) {
+            //     // dd(parse_url($referer, PHP_URL_HOST) !== $allowedHost);
+            //     abort(403, 'Unauthorized access.');
+            // }
 
-        $videos = DB::select(DB::raw("SELECT * FROM `videos` where `id` = $rec_id;"));
-        $url = $videos[0]->video_path;
-        $storagePath = storage_path('app/' . $url);
+            $videos = DB::select(DB::raw("SELECT * FROM `videos` where `id` = $rec_id;"));
+            $url = $videos[0]->video_path;
+            $storagePath = storage_path('app/' . $url);
 
-        if (!\File::exists($storagePath)) {
+            if (!\File::exists($storagePath)) {
+                return view('error.home');
+            }
+
+            return response()->file($storagePath);
+        } catch (Exception $e) {
+            Log::error('UserManualController-videoStream: ' . $e->getMessage());
             return view('error.home');
         }
-
-        return response()->file($storagePath);
-    } catch (Exception $e) {
-        Log::error('UserManualController-videoStream: ' . $e->getMessage());
-        return view('error.home');
     }
-}
 
     public function getpdf($chapter_id)
     {
@@ -145,27 +106,6 @@ public function strem_video(Request $request)
             
         } catch (Exception $e) {
             $e_method = "getpdf";
-            return MyFuncs::Exception_error_handler($this->e_controller, $e_method, $e->getMessage());
-        }
-    }
-
-    public function strempdf($paramiter)
-    {
-       try {
-            $rec_id = $paramiter;
-            $pdfs = DB::select(DB::raw("SELECT * FROM `pdfs` where `id` = $rec_id;"));
-            $path = 'app/'.$pdfs[0]->pdf_path;
-
-            $storagePath = storage_path($path);          
-            if(file_exists($storagePath)){
-                $mimeType = mime_content_type($storagePath);
-                return response()->file($storagePath);
-            }else{
-                return 'File Not Found';
-            }
-            
-        } catch (Exception $e) {
-            $e_method = "strempdf";
             return MyFuncs::Exception_error_handler($this->e_controller, $e_method, $e->getMessage());
         }
     }

@@ -15,64 +15,6 @@ class ChapterController extends Controller
 {
     protected $e_controller = "ChapterController";
 
-    public function classWiseSubject(Request $request,  $show_all = 0) /*1-For All Subjects*/
-    {
-        $class_id = intval(Crypt::decrypt($request->id));
-        $rs_records = DB::select(DB::raw("SELECT `sbt`.`id` as `opt_id`, concat(`sbt`.`name`, ' - ', case `sub`.`isoptional_id` when 1 then 'Compulsory' else 'Optional' end) as `opt_text` from `subjects` `sub` inner join `subject_types` `sbt` on `sbt`.`id` = `sub`.`subjectType_id` where `sub`.`classType_id` = $class_id and `sub`.`status` = 1 order by `sbt`.`sorting_order_id`;"));
-        $show_disabled = 1;
-        $box_caption = "Subjects";
-        return view('admin.common.select_box_v1', compact('rs_records', 'show_disabled', 'box_caption', 'show_all'));
-    }
-
-    public function subjectWiseChapter(Request $request) /*1-For All Subjects*/
-    {
-        $subject_id = intval(Crypt::decrypt($request->id));
-        $rs_records = DB::select(DB::raw("SELECT `id` as `opt_id`, `chapter_topic_name` as `opt_text` from `chapter_topic` where `subjectType_id` = $subject_id;"));
-        $show_disabled = 1;
-        $box_caption = "Chapter Topic Name";
-        return view('admin.common.select_box_v1', compact('rs_records', 'show_disabled', 'box_caption', 'show_all'));
-    }
-
-    public function video_viewer($path)
-    {   
-        try {
-            $path = Crypt::decrypt($path);
-            $storagePath = Storage_path() . '/app/'.$path;
-            if (file_exists($storagePath)) {
-                $mimeType = mime_content_type($storagePath);
-
-                // Return video file inline
-                return response()->file($storagePath, [
-                    'Content-Type' => $mimeType,
-                    'Content-Disposition' => 'inline; filename="' . basename($storagePath) . '"'
-                ]);
-            } else {
-                // File Not Found view
-                return view('error.fnf', compact('storagePath'));
-            }
-        } catch (\Exception $e) {
-            $e_method = "video_viewer";
-            return MyFuncs::Exception_error_handler($this->e_controller, $e_method, $e->getMessage());
-        }    
-    }
-
-    public function pdf_viewer($pdfFilePath)
-    {
-        try {
-            $l_act_file_path = Crypt::decrypt($pdfFilePath);
-            $storagePath = storage_path($l_act_file_path);          
-            if(file_exists($storagePath)){
-                $mimeType = mime_content_type($storagePath);
-                return response()->file($storagePath);
-            }else{
-                return 'File Not Found';
-            }
-        } catch (\Exception $e) {
-            $e_method = "pdf_viewer";
-            return MyFuncs::Exception_error_handler($this->e_controller, $e_method, $e->getMessage());
-        }        
-    }
-
     public function index()
     { 
         try {

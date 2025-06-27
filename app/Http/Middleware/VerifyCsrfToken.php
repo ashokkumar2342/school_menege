@@ -13,13 +13,12 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         'payment/paytm-callback',
-        'getuserdetails',
         'getclass',
         'getsubject',
         'getschapter',
         'getvideo',
-        'stremvideo',
+        'viewvideo/stream',
         'getpdf',
-        'strempdf',
+        'pdf/view',
     ];
 }
