@@ -106,7 +106,7 @@ class VideoController extends Controller
     public function pdf_index()
     { 
         try {
-            $permission_flag = MyFuncs::isPermission_route(15);
+            $permission_flag = MyFuncs::isPermission_route(16);
             if(!$permission_flag){
                 return view('admin.common.error');
             }
@@ -122,7 +122,7 @@ class VideoController extends Controller
     public function pdf_table(Request $request)
     {
         try {
-            $permission_flag = MyFuncs::isPermission_route(15);
+            $permission_flag = MyFuncs::isPermission_route(16);
             if(!$permission_flag){
                 return view('admin.common.error');
             }
@@ -139,7 +139,7 @@ class VideoController extends Controller
     public function pdf_store(Request $request)
     {
         try {
-            $permission_flag = MyFuncs::isPermission_route(15);
+            $permission_flag = MyFuncs::isPermission_route(16);
             if(!$permission_flag){
                 $response=['status'=>0,'msg'=>'Something Went Wrong'];
                 return response()->json($response);
