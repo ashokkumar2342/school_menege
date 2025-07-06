@@ -142,7 +142,7 @@ class VideoController extends Controller
                 'class' => 'required', 
                 'subject' => 'required', 
                 'chpater' => 'required',
-                'video' => 'required|file|mimes:mp4,mov,ogg,qt|max:500000', // Max 500MB
+                'video' => 'required|file|mimes:mp4,mov,ogg,qt|max:2200000', // Max 500MB
                 'title' => 'required',
                 'description' => 'required',
             ];
