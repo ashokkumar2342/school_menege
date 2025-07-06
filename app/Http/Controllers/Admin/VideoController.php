@@ -127,6 +127,11 @@ class VideoController extends Controller
 
     public function store(Request $request)
     {
+        ini_set('max_execution_time', '14400');
+        ini_set('memory_limit','10000M');
+        ini_set("pcre.backtrack_limit", "100000000");
+        ini_set('upload_max_filesize', '3048M');
+        ini_set('post_max_size', '3048M');
         try {
             $permission_flag = MyFuncs::isPermission_route(15);
             if(!$permission_flag){

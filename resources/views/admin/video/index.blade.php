@@ -1,39 +1,5 @@
 @extends('admin.layout.base')
 @section('body')
-<style type="text/css">
-    .video-card {
-    border-radius: 15px;
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.video-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-}
-
-.video-header {
-    background: linear-gradient(135deg, #007bff, #00c6ff);
-    padding: 15px;
-    font-weight: bold;
-    font-size: 1.2rem;
-    border-bottom: none;
-    border-radius: 15px 15px 0 0;
-}
-
-.video-wrapper {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-.video-description {
-    font-size: 14px;
-    color: #333;
-    line-height: 1.6;
-}
-
-</style>
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
