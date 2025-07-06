@@ -68,6 +68,12 @@ Route::group(['middleware' => ['preventBackHistory','admin','web']], function() 
 		Route::post('v-store', 'VideoController@video_store')->name('admin.video.store');
 		Route::get('v-delete/{rec_id}', 'VideoController@video_delete')->name('admin.video.delete');
 
+		Route::post('/watch-event', 'VideoController@watchEvent')->name('video.watch.event');
+		// routes/web.php
+
+		Route::post('store', 'VideoController@store')->name('admin.video.store');
+
+		
 		Route::get('p-index', 'VideoController@pdf_index')->name('admin.pdf.index');
 		Route::get('p-table', 'VideoController@pdf_table')->name('admin.pdf.table');
 		Route::post('p-store', 'VideoController@pdf_store')->name('admin.pdf.store');

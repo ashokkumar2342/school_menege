@@ -50,7 +50,16 @@ function callAjax(obj,url,divId,callback){
     function(data, status){
         if(status=="success")
 		{
+
 			$('#'+divId).html(data);
+			if (typeof bindVideoPlayEvents === 'function') {
+			    bindVideoPlayEvents();
+			}
+
+			if (typeof bindVideoWatchTracker === 'function') {
+			    bindVideoWatchTracker();
+			}
+			
 			if(obj.getAttribute('no-add-form')!="true")
 				callJqueryDefault(divId);
 		 

@@ -1,6 +1,39 @@
 @extends('admin.layout.base')
 @section('body')
+<style type="text/css">
+    .video-card {
+    border-radius: 15px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
+.video-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.video-header {
+    background: linear-gradient(135deg, #007bff, #00c6ff);
+    padding: 15px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    border-bottom: none;
+    border-radius: 15px 15px 0 0;
+}
+
+.video-wrapper {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.video-description {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.6;
+}
+
+</style>
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
@@ -95,11 +128,75 @@
 </section>
 @endsection
 @push('scripts')
+<script>
+function bindVideoWatchTracker() {
+    const videos = document.querySelectorAll('.manualVideoPlayer');
 
-    <script>
-        document.addEventListener('contextmenu', event => event.preventDefault());
-    </script>
+    videos.forEach(video => {
+        if (!video.dataset.trackerBound) {
+            video.dataset.trackerBound = true;
+
+            const videoId = video.getAttribute('data-video-id');
+            const token = video.getAttribute('data-token');
+
+            let lastStartTime = null;
+            let intervalTracker = null;
+
+            function sendWatchData(action, seconds) {
+                if (seconds < 2 && action !== 'stop') return;
+
+                fetch("{{ url('/admin/video/watch-event') }}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        video_id: videoId,
+                        token: token,
+                        watched_seconds: Math.floor(seconds),
+                        action: action
+                    })
+                });
+            }
+
+            function startTracking() {
+                lastStartTime = Date.now();
+                sendWatchData('play', 0);
+
+                intervalTracker = setInterval(() => {
+                    if (lastStartTime) {
+                        const watched = (Date.now() - lastStartTime) / 1000;
+                        sendWatchData('watch', watched);
+                        lastStartTime = Date.now();
+                    }
+                }, 15000);
+            }
+
+            function stopTracking(eventName = 'pause') {
+                if (lastStartTime) {
+                    const watched = (Date.now() - lastStartTime) / 1000;
+                    sendWatchData(eventName, watched);
+                    lastStartTime = null;
+                }
+
+                if (intervalTracker) {
+                    clearInterval(intervalTracker);
+                    intervalTracker = null;
+                }
+            }
+
+            video.addEventListener('play', () => startTracking());
+            video.addEventListener('pause', () => stopTracking('pause'));
+            video.addEventListener('ended', () => stopTracking('stop'));
+            window.addEventListener('beforeunload', () => stopTracking('stop'));
+        }
+    });
+}
+</script>
 @endpush
+
+
 
 
 

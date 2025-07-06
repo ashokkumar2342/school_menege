@@ -6,6 +6,7 @@
     "type": "project",
     "require": {
         "php": ">=7.0.0",
+        "aws/aws-sdk-php": "3.148",
         "barryvdh/laravel-dompdf": "^0.8.3",
         "chromeheadlessio/php-client": "^0.7.0",
         "daltcore/lara-pdf-merger": "^2.0",
@@ -15,6 +16,7 @@
         "laravel/passport": "^4.0",
         "laravel/tinker": "~1.0",
         "laravelcollective/html": "^5.4.0",
+        "league/flysystem-aws-s3-v3": "1.0",
         "maatwebsite/excel": "~2.1.0",
         "mews/captcha": "^2.2",
         "milon/barcode": "^5.3",

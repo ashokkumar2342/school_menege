@@ -68,7 +68,6 @@ class ApiController extends Controller
     public function strem_video(Request $request)
     {
         try {
-
             $rec_id = Crypt::decrypt($request->id);
             $token = $request->token;
 
@@ -78,20 +77,11 @@ class ApiController extends Controller
             if (!in_array(parse_url($referer, PHP_URL_HOST), $allowedHosts)) {
                 abort(403, 'Unauthorized access.');
             }
-            // if (parse_url($referer, PHP_URL_HOST) !== $allowedHost) {
-            //     // dd(parse_url($referer, PHP_URL_HOST) !== $allowedHost);
-            //     abort(403, 'Unauthorized access.');
-            // }
 
             $videos = DB::select(DB::raw("SELECT * FROM `videos` where `id` = $rec_id;"));
             $url = $videos[0]->video_path;
-            $storagePath = storage_path('app/' . $url);
-
-            if (!\File::exists($storagePath)) {
-                return view('error.home');
-            }
-
-            return response()->file($storagePath);
+            $storagePath='https://eageskoolvideo.s3.ap-south-1.amazonaws.com/'.$url;
+            return redirect()->away($storagePath);
         } catch (Exception $e) {
             Log::error('UserManualController-videoStream: ' . $e->getMessage());
             return view('error.home');

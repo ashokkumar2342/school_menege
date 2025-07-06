@@ -4,6 +4,7 @@ namespace App\Helper;
 use Illuminate\Support\Facades\Auth;
 use Route;
 use Illuminate\Support\Facades\DB;
+use Aws\S3\S3Client;
 
 class MyFuncs {
 
@@ -286,6 +287,40 @@ class MyFuncs {
       return $result_date;  
     }
     
+  }
+
+  public static function uploadToS3($file, $filename)
+  {
+      try {
+          $s3 = new S3Client([
+              'version' => 'latest',
+              'region'  => env('AWS_DEFAULT_REGION'),
+              'credentials' => [
+                  'key'    => env('AWS_ACCESS_KEY_ID'),
+                  'secret' => env('AWS_SECRET_ACCESS_KEY'),
+              ],
+          ]);
+
+          $bucket = env('AWS_BUCKET');
+
+          $result = $s3->putObject([
+              'Bucket' => $bucket,
+              'Key'    => $filename,
+              'SourceFile' => $file->getRealPath(),
+              'ACL'    => 'public-read',
+          ]);
+
+          return [
+              'success' => true,
+              'url' => $result['ObjectURL'],
+          ];
+      } catch (\Exception $e) {
+          \Log::error('S3 Upload Error', ['error' => $e->getMessage()]);
+          return [
+              'success' => false,
+              'error' => $e->getMessage(),
+          ];
+      }
   }
 
 

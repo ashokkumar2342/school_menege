@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Helper\MyFuncs;
 use App\Helper\SelectBox;
+use Illuminate\Support\Facades\Response;
+use TusPhp\Tus\Server as TusServer;
+use Storage;
+use Aws\S3\S3Client;
 
 class VideoController extends Controller
 {
@@ -23,7 +27,7 @@ class VideoController extends Controller
                 return view('admin.common.error');
             }
             $classes = MyFuncs::getClasses();  
-            return view('admin.video.index',compact('classes'));
+            return view('admin.video.index_v1',compact('classes'));
         } catch (\Exception $e) {
             $e_method = "video_index";
             return MyFuncs::Exception_error_handler($this->e_controller, $e_method, $e->getMessage());
@@ -44,7 +48,84 @@ class VideoController extends Controller
         }
     }
 
-    public function video_store(Request $request)
+    // public function video_store(Request $request)
+    // {
+    //     try {
+    //         $permission_flag = MyFuncs::isPermission_route(15);
+    //         if(!$permission_flag){
+    //             $response=['status'=>0,'msg'=>'Something Went Wrong'];
+    //             return response()->json($response);
+    //         }
+    //         $rules= [     
+    //             'class' => 'required', 
+    //             'subject' => 'required', 
+    //             'chpater' => 'required',
+    //             'video' => 'required|file|mimes:mp4,mov,ogg,qt|max:500000', // Max 500MB
+    //             'title' => 'required',
+    //             'description' => 'required',
+    //         ];
+    //         $customMessages = [
+    //             'class.required'=> 'Please Select Class',
+    //             'subject.required'=> 'Please Select Subject',
+    //             'chpater.required'=> 'Please Enter Chapter/Topic Name',
+    //             'title.required'=> 'Please Enter Title',
+    //             'description.required'=> 'Please Enter Description',
+    //         ];
+    //         $validator = Validator::make($request->all(),$rules, $customMessages);
+    //         if ($validator->fails()) {
+    //             $errors = $validator->errors()->all();
+    //             $response=array();
+    //             $response["status"]=0;
+    //             $response["msg"]=$errors[0];
+    //             return response()->json($response);// response as json
+    //         }
+    //         $class_id = intval(Crypt::decrypt($request->class));            
+    //         $subject_id = intval(Crypt::decrypt($request->subject));
+    //         $chpater_id = intval(Crypt::decrypt($request->chpater));
+    //         $video = $request->video;
+    //         $title = substr(MyFuncs::removeSpacialChr($request->title), 0, 250);
+    //         $description = substr(MyFuncs::removeSpacialChr($request->description), 0, 500);
+
+    //         $extension = $video->getClientOriginalExtension();
+
+    //         // Create unique filename with extension
+    //         $filename = date('dmYHis') . '.' . $extension;
+
+    //         $folder_path = 'video/' .$class_id. '/' .$subject_id. '/' .$chpater_id;
+
+    //         $final_path_video = $folder_path . '/' . $filename;
+
+    //         $video->storeAs($folder_path, $filename);
+                      
+    //         $rs_update = DB::select(DB::raw("INSERT into `videos`(`classType_id`, `subjectType_id`, `chapter_id`, `video_path`, `title`, `description`) values($class_id, $subject_id, '$chpater_id', '$final_path_video', '$title', '$description');"));
+
+    //         $response=['status'=>1,'msg'=>'Upload Successfully'];
+    //         return response()->json($response);
+    //     } catch (Exception $e) {
+    //         $e_method = "video_store";
+    //         return MyFuncs::Exception_error_handler($this->e_controller, $e_method, $e->getMessage());
+    //     }
+    // }
+
+    // public function store(Request $request)
+    // {
+
+    //         $request->validate([
+    //            'video' => 'required|file|mimes:mp4,pdf|max:10240'
+    //        ]);
+
+    //        $video = $request->file('video');
+    //        $filename = time() . '_' . $video->getClientOriginalName();
+
+    //        $response = MyFuncs::uploadToS3($video, $filename);
+
+    //        return response()->json($response);
+    // }
+
+
+
+
+    public function store(Request $request)
     {
         try {
             $permission_flag = MyFuncs::isPermission_route(15);
@@ -91,16 +172,42 @@ class VideoController extends Controller
 
             $final_path_video = $folder_path . '/' . $filename;
 
-            $video->storeAs($folder_path, $filename);
+            $response = MyFuncs::uploadToS3($video, $final_path_video);
+            // $video->storeAs($folder_path, $filename);
                       
             $rs_update = DB::select(DB::raw("INSERT into `videos`(`classType_id`, `subjectType_id`, `chapter_id`, `video_path`, `title`, `description`) values($class_id, $subject_id, '$chpater_id', '$final_path_video', '$title', '$description');"));
 
-            $response=['status'=>1,'msg'=>'Upload Successfully'];
-            return response()->json($response);
+            return response()->json(['success' => true, 'message' => 'Upload Successfully']);
         } catch (Exception $e) {
             $e_method = "video_store";
             return MyFuncs::Exception_error_handler($this->e_controller, $e_method, $e->getMessage());
         }
+    }
+
+
+
+    public function watchEvent(Request $request)
+    {
+        $userId = MyFuncs::getUserId();
+
+        // Optional: Skip meaningless logs
+        if ((int) $request->watched_seconds < 1 && $request->action !== 'stop') {
+            return response()->json(['status' => 'ignored']);
+        }
+
+        DB::table('video_watch_logs')->insert([
+            'user_id'         => $userId,
+            'video_id'        => (int) $request->video_id,
+            'watched_seconds' => (int) $request->watched_seconds,
+            'token'           => $request->token,
+            'ip_address'      => $request->ip(),
+            'action'          => $request->action,
+            'watched_at'      => now(),
+            'created_at'      => now(),
+            'updated_at'      => now(),
+        ]);
+
+        return response()->json(['status' => 'logged']);
     }
 
     public function pdf_index()
