@@ -87,6 +87,11 @@
         const formData = new FormData(form);
         const progressBar = document.getElementById('progressBar');
         const uploadStatus = document.getElementById('uploadStatus');
+        const submitButton = form.querySelector('button[type="submit"]');
+
+        // 🔒 Disable submit button during upload
+        submitButton.disabled = true;
+        submitButton.innerText = 'Uploading...';
 
         const xhr = new XMLHttpRequest();
         xhr.open('POST', "{{ route('admin.video.store') }}", true);
@@ -101,16 +106,21 @@
         });
 
         xhr.onload = function() {
+            submitButton.disabled = false;
+            submitButton.innerText = 'Upload Video';
+
             if (xhr.status === 200) {
                 let response = JSON.parse(xhr.responseText);
                 if (response.success) {
                     uploadStatus.textContent = response.message;
-                    // Clear only specific fields (not dropdowns)
-                        form.querySelector('[name="title"]').value = '';
-                        form.querySelector('[name="description"]').value = '';
-                        form.querySelector('[name="video"]').value = '';
+
+                    // Clear fields
+                    form.querySelector('[name="title"]').value = '';
+                    form.querySelector('[name="description"]').value = '';
+                    form.querySelector('[name="video"]').value = '';
                     progressBar.style.width = '0%';
-                    // 🔄 Refresh video table
+
+                    // Refresh video table
                     const chapterDropdown = document.getElementById('chapter_select_box');
                     if (chapterDropdown) {
                         chapterDropdown.dispatchEvent(new Event('change'));
@@ -123,7 +133,14 @@
             }
         };
 
+        xhr.onerror = function() {
+            submitButton.disabled = false;
+            submitButton.innerText = 'Upload Video';
+            uploadStatus.textContent = 'Network error occurred.';
+        };
+
         xhr.send(formData);
     });
 </script>
+
 @endpush

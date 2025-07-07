@@ -75,7 +75,7 @@ class ApiController extends Controller
             $referer = $request->headers->get('referer');
             $allowedHosts = ['manage.eageskool.com', '127.0.0.1', 'localhost', 'demo.eageskool.com'];
             if (!in_array(parse_url($referer, PHP_URL_HOST), $allowedHosts)) {
-                abort(403, 'Unauthorized access.');
+                return view('error.home');
             }
 
             $videos = DB::select(DB::raw("SELECT * FROM `videos` where `id` = $rec_id;"));
@@ -100,7 +100,7 @@ class ApiController extends Controller
         }
     }
 
-    public function securePdfView($encryptedPath, Request $request)
+    public function securePdfView(Request $request, $encryptedPath)
     {
         try {
             $referer = $request->headers->get('referer');

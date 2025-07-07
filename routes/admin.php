@@ -65,13 +65,10 @@ Route::group(['middleware' => ['preventBackHistory','admin','web']], function() 
 	Route::group(['prefix' => 'video'], function() {
 		Route::get('v-index', 'VideoController@video_index')->name('admin.video.index');
 		Route::get('v-table', 'VideoController@video_table')->name('admin.video.table');
-		Route::post('v-store', 'VideoController@video_store')->name('admin.video.store');
-		Route::get('v-delete/{rec_id}', 'VideoController@video_delete')->name('admin.video.delete');
-
+		Route::post('v-store', 'VideoController@store')->name('admin.video.store');
 		Route::post('/watch-event', 'VideoController@watchEvent')->name('video.watch.event');
-		// routes/web.php
 
-		Route::post('store', 'VideoController@store')->name('admin.video.store');
+		
 
 		
 		Route::get('p-index', 'VideoController@pdf_index')->name('admin.pdf.index');

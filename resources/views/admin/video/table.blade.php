@@ -68,15 +68,17 @@
 
 </style>
 @foreach ($rs_videos as $rs_val)
-<div class="col-md-6 col-lg-4 mb-4">
-    <div class="youtube-style-card">
-        <div class="youtube-video-thumb">
-            @php
-                $token = bin2hex(random_bytes(32));
-                $url = url('viewvideo/stream') . '/' . Crypt::encrypt($rs_val->id) . '/' . $token;
-                $duration = '12:45'; // You can make this dynamic if needed
-            @endphp
+@php
+    $token = bin2hex(random_bytes(32));
+    $url = url('viewvideo/stream') . '/' . Crypt::encrypt($rs_val->id) . '/' . $token;
+    $duration = '12:45'; // You can make this dynamic
+@endphp
 
+<div class="col-md-6 col-lg-4 mb-4">
+    <div class="youtube-style-card d-flex flex-column h-100">
+
+        {{-- Video Thumbnail --}}
+        <div class="youtube-video-thumb">
             <video
                 class="manualVideoPlayer"
                 data-video-id="{{ $rs_val->id }}"
@@ -89,29 +91,45 @@
             >
                 <source src="{{ $url }}" type="video/mp4">
             </video>
-
-            {{-- Duration Badge --}}
             <span class="video-duration">{{ $duration }}</span>
         </div>
 
-        <div class="youtube-video-info">
-            {{-- Channel Avatar + Name --}}
+        {{-- Info Block --}}
+        <div class="youtube-video-info flex-grow-1 d-flex flex-column">
+
+            {{-- Title and Channel --}}
             <div class="d-flex align-items-center mb-2">
-                <img src="{{ asset('temp_1/img/favicon.png') }}" class="rounded-circle mr-2" width="36" height="36" alt="Avatar">
+                {{-- <img src="{{ asset('temp_1/img/favicon.png') }}" class="rounded-circle me-2" width="36" height="36" alt="Avatar"> --}}
                 <div>
-                    <h6 class="youtube-video-title mb-0" title="{{ $rs_val->title }}">{{ $rs_val->title }}</h6>
-                    <small class="text-muted">EageSkool Channel</small>
+                    <h6 class="youtube-video-title mb-0" title="{{ $rs_val->title }}">
+                        {{ \Illuminate\Support\Str::limit($rs_val->title, 40) }}
+                    </h6>
+                    <small class="text-muted">Eageskool</small>
                 </div>
             </div>
 
             {{-- Description --}}
-            <p class="youtube-video-desc mb-1">{{ \Illuminate\Support\Str::limit($rs_val->description, 100) }}</p>
+            <p class="youtube-video-desc mb-2" title="{{ $rs_val->description }}">
+                {{ \Illuminate\Support\Str::limit($rs_val->description, 100) }}
+            </p>
 
-            {{-- Views + Upload Date --}}
-            <small class="text-muted">
-                {{ rand(1,9) }}.{{ rand(0,9) }}K views • {{ \Carbon\Carbon::parse(12-10-2025)->diffForHumans() }}
+            {{-- Views + Date --}}
+            <small class="text-muted mb-3">
+                {{ rand(1,9) }}.{{ rand(0,9) }}K views
             </small>
+
+            {{-- Admin Controls --}}
+            <div class="d-flex justify-content-between mt-auto pt-2 border-top">
+
+                <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-danger" {{-- onclick="deleteVideo({{ $rs_val->id }})" --}}>
+                        <i class="fa fa-trash"></i> Delete
+                    </button>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
 @endforeach
+
