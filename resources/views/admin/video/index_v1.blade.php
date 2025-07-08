@@ -80,6 +80,72 @@
 @endsection
 @push('scripts')
 <script>
+function bindVideoWatchTracker() {
+    const videos = document.querySelectorAll('.manualVideoPlayer');
+
+    videos.forEach(video => {
+        if (!video.dataset.trackerBound) {
+            video.dataset.trackerBound = true;
+
+            const videoId = video.getAttribute('data-video-id');
+            const token = video.getAttribute('data-token');
+
+            let lastStartTime = null;
+            let intervalTracker = null;
+
+            function sendWatchData(action, seconds) {
+                if (seconds < 2 && action !== 'stop') return;
+
+                fetch("{{ url('/admin/video/watch-event') }}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        video_id: videoId,
+                        token: token,
+                        watched_seconds: Math.floor(seconds),
+                        action: action
+                    })
+                });
+            }
+
+            function startTracking() {
+                lastStartTime = Date.now();
+                sendWatchData('play', 0);
+
+                intervalTracker = setInterval(() => {
+                    if (lastStartTime) {
+                        const watched = (Date.now() - lastStartTime) / 1000;
+                        sendWatchData('watch', watched);
+                        lastStartTime = Date.now();
+                    }
+                }, 15000);
+            }
+
+            function stopTracking(eventName = 'pause') {
+                if (lastStartTime) {
+                    const watched = (Date.now() - lastStartTime) / 1000;
+                    sendWatchData(eventName, watched);
+                    lastStartTime = null;
+                }
+
+                if (intervalTracker) {
+                    clearInterval(intervalTracker);
+                    intervalTracker = null;
+                }
+            }
+
+            video.addEventListener('play', () => startTracking());
+            video.addEventListener('pause', () => stopTracking('pause'));
+            video.addEventListener('ended', () => stopTracking('stop'));
+            window.addEventListener('beforeunload', () => stopTracking('stop'));
+        }
+    });
+}
+</script>
+<script>
     document.getElementById('videoUploadForm').addEventListener('submit', function(e) {
         e.preventDefault();
 

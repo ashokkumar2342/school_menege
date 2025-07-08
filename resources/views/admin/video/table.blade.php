@@ -91,7 +91,7 @@
             >
                 <source src="{{ $url }}" type="video/mp4">
             </video>
-            <span class="video-duration">{{ $duration }}</span>
+            {{-- <span class="video-duration">{{ $duration }}</span> --}}
         </div>
 
         {{-- Info Block --}}
