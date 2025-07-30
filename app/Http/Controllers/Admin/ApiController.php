@@ -28,6 +28,18 @@ class ApiController extends Controller
         }
     }
 
+    public function getallsubjects()
+    {
+       try {
+            $rs_subjects = MyFuncs::getSubjectType();
+            return response()->json($rs_subjects);
+            
+        } catch (Exception $e) {
+            $e_method = "getallsubjects";
+            return MyFuncs::Exception_error_handler($this->e_controller, $e_method, $e->getMessage());
+        }
+    }
+
     public function getsubject($class_id)
     {
        try {

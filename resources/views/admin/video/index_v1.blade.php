@@ -79,7 +79,7 @@
 </section>
 @endsection
 @push('scripts')
-<script>
+{{-- <script>
 function bindVideoWatchTracker() {
     const videos = document.querySelectorAll('.manualVideoPlayer');
 
@@ -144,7 +144,7 @@ function bindVideoWatchTracker() {
         }
     });
 }
-</script>
+</script> --}}
 <script>
     document.getElementById('videoUploadForm').addEventListener('submit', function(e) {
         e.preventDefault();

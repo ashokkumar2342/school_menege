@@ -52,9 +52,7 @@ function callAjax(obj,url,divId,callback){
 		{
 
 			$('#'+divId).html(data);
-			if (typeof bindVideoPlayEvents === 'function') {
-			    bindVideoPlayEvents();
-			}
+			
 
 			if (typeof bindVideoWatchTracker === 'function') {
 			    bindVideoWatchTracker();

@@ -102,6 +102,12 @@ class MyFuncs {
     return $role_id = Auth::guard('admin')->user()->role_id;  
   }
 
+  public static function getSubjectType()
+  { 
+    $result_rs = DB::select(DB::raw("SELECT `id` as `opt_id`, `name` as `opt_text` from  `subject_types` where `status` = 1 order by `sorting_order_id`;"));
+    return $result_rs;
+  }
+
   public static function check_password_strength($password, $user_id) 
   {
     $passwordError = "";
