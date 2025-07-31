@@ -9,9 +9,9 @@ Route::get('/', function () {
  	// return view('admin.auth.login');
 });
 
-Route::get('getclass', 'Admin\ApiController@getclass')->name('admin.api.getclass');
+Route::get('getallclass', 'Admin\ApiController@getclass')->name('admin.api.getclass');
 Route::get('getallsubjects', 'Admin\ApiController@getallsubjects')->name('admin.api.getallsubjects');
-Route::get('getsubject/{class_id}', 'Admin\ApiController@getsubject')->name('admin.api.getsubject');
+//Route::get('getsubject/{class_id}', 'Admin\ApiController@getsubject')->name('admin.api.getsubject');
 Route::get('getschapter/{class_id}/{subject_id}', 'Admin\ApiController@getchapter')->name('admin.api.getchapter');
 
 Route::get('getpdf/{chapter_id}', 'Admin\ApiController@getpdf')->name('admin.api.getpdf');
