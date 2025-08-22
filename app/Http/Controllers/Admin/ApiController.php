@@ -85,7 +85,7 @@ class ApiController extends Controller
 
             // $allowedHost = parse_url('https://manage.eageskool.com', PHP_URL_HOST);
             $referer = $request->headers->get('referer');
-            $allowedHosts = ['manage.eageskool.com', '127.0.0.1', 'localhost', 'demo.eageskool.com'];
+            $allowedHosts = ['manage.eageskool.com', '127.0.0.1', 'localhost', 'demo.eageskool.com', 'eduvia.eageskool.com'];
             if (!in_array(parse_url($referer, PHP_URL_HOST), $allowedHosts)) {
                 return view('error.home');
             }
