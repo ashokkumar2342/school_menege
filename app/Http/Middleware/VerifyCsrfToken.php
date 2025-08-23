@@ -15,6 +15,7 @@ class VerifyCsrfToken extends Middleware
         'payment/paytm-callback',
         'getallclass',
         'getallsubjects',
+        'getsubjectadmin',
         'getschapter',
         'getvideo',
         'viewvideo/stream',
