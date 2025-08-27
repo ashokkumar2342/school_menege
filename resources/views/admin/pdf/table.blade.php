@@ -1,57 +1,67 @@
 <style>
     .hover-shadow:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12) !important;
-}
-
-    .btn-group .btn {
-    min-width: 70px;
-}
+        transform: translateY(-5px);
+        box-shadow: 0 10px 22px rgba(0, 0, 0, 0.15) !important;
+    }
+    .pdf-card-title {
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: #1d3557;
+        line-height: 1.4;
+    }
+    .pdf-card-description {
+        font-size: 0.9rem;
+        color: #6c757d;
+        line-height: 1.5;
+    }
 </style>
+
 @foreach($rs_result as $rs_val)
 @php
-    $pdfFile = 'https://eageskoolvideo.s3.ap-south-1.amazonaws.com/' . $rs_val->pdf_path;
-    $pdfUrl = url('pdfjs/web/viewer.html') . '?file=' . urlencode($pdfFile) . '&disableDownload=true&disablePrint=true';
+    $s3Key   = $rs_val->pdf_path; 
+    $encPath = Crypt::encrypt($s3Key);
+    $fileParam = urlencode(route('pdf.proxy', $encPath));
+    $pdfUrl = url('pdfjs/web/viewer.html') 
+                . '?file=' . $fileParam 
+                . '&disableDownload=true&disablePrint=true';
 @endphp
 
 <div class="col-md-6 col-lg-4 mb-4">
-    <div class="card h-100 shadow rounded-4 border-0 bg-white hover-shadow" style="transition: 0.3s ease;">
-        <div class="card-body p-3 d-flex flex-column">
+    <div class="card h-100 shadow-sm rounded-4 border-0 bg-white hover-shadow" style="transition: 0.3s ease;">
+        
+        {{-- PDF Preview on Top --}}
+        <div class="border-bottom">
+            <iframe 
+                src="{{ $pdfUrl }}" 
+                width="100%" 
+                height="220px" 
+                style="border: none; border-radius: 12px 12px 0 0;">
+            </iframe>
+        </div>
 
+        <div class="card-body p-3 d-flex flex-column">
+            
             {{-- Title --}}
-            <h5 class="fw-semibold mb-2" style="font-size: 1.05rem; color: #1d3557;">
-                <i class="fa fa-file-pdf text-danger me-1"></i> 
-                {{ \Illuminate\Support\Str::limit($rs_val->title, 60) }}
+            <h5 class="pdf-card-title mb-2">
+                <i class="fa fa-file-pdf text-danger me-2"></i> 
+                {{ \Illuminate\Support\Str::limit($rs_val->title, 55) }}
             </h5>
 
-            {{-- PDF Preview --}}
-            <div class="mb-3 border border-light rounded" style="overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.08);">
-                <iframe 
-                    src="{{ $pdfUrl }}" 
-                    width="100%" 
-                    height="200px" 
-                    style="border: none;">
-                </iframe>
-            </div>
-
             {{-- Description --}}
-            <p class="text-muted mb-3 flex-grow-1" style="font-size: 0.875rem;">
+            <p class="pdf-card-description mb-3 flex-grow-1">
                 {{ \Illuminate\Support\Str::limit($rs_val->description, 100) }}
             </p>
 
             {{-- Action Buttons --}}
             <div class="d-flex justify-content-between align-items-center mt-auto pt-2 border-top">
-                {{-- View Button --}}
-                <a href="{{ $pdfUrl }}" target="_blank" class="btn btn-sm btn-outline-dark rounded-pill me-2">
+                <a href="{{ $pdfUrl }}" target="_blank" 
+                   class="btn btn-sm btn-outline-primary rounded-pill px-3">
                     <i class="fa fa-eye me-1"></i> View
                 </a>
-
-                {{-- Admin Buttons --}}
-                <div class="btn-group">
-                    <button type="button" class="btn btn-sm btn-danger" {{-- onclick="deletePdf({{ $rs_val->id }})" --}}>
-                        <i class="fa fa-trash"></i> Delete
-                    </button>
-                </div>
+                {{-- <button type="button" 
+                        class="btn btn-sm btn-outline-danger rounded-pill px-3">
+                    <i class="fa fa-trash"></i> Delete
+                </button> --}}
             </div>
 
         </div>

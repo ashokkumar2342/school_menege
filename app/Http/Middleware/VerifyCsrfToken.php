@@ -21,5 +21,6 @@ class VerifyCsrfToken extends Middleware
         'viewvideo/stream',
         'getpdf',
         'pdf/view',
+        '/pdf/proxy/',
     ];
 }

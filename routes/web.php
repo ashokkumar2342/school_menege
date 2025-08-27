@@ -20,6 +20,9 @@ Route::get('pdf/view/{encryptedPath}', 'Admin\ApiController@securePdfView')->nam
 Route::get('getvideo/{chapter_id}', 'Admin\ApiController@getvideo')->name('admin.api.getvideo');
 Route::get('viewvideo/stream/{id}/{token}', 'Admin\ApiController@strem_video')->name('admin.viewvideo.stream');
 
+Route::get('/pdf/proxy/{enc}', 'Admin\ApiController@show')
+    ->name('pdf.proxy');
+
 
 
 
