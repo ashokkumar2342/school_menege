@@ -85,11 +85,11 @@ Route::group(['middleware' => ['preventBackHistory','admin','web']], function() 
 
 	// Support
 	Route::group(['prefix' => 'support'], function() {
-		// Feedback/Help/Error (751)
-	    Route::get('desk_index', 'SupportController@deskIndex')->name('admin.support.desk.index');
-	    Route::get('desk_table', 'SupportController@deskTable')->name('admin.support.desk.table');
-	    Route::get('desk-form', 'SupportController@deskForm')->name('admin.support.desk.form');
-	    Route::post('desk-store', 'SupportController@deskStore')->name('admin.support.desk.store');
+		// // Feedback/Help/Error (751)
+	 //    Route::get('desk_index', 'SupportController@deskIndex')->name('admin.support.desk.index');
+	 //    Route::get('desk_table', 'SupportController@deskTable')->name('admin.support.desk.table');
+	 //    Route::get('desk-form', 'SupportController@deskForm')->name('admin.support.desk.form');
+	 //    Route::post('desk-store', 'SupportController@deskStore')->name('admin.support.desk.store');
 	    
 	    // Feedback/Solution (752)
 	    Route::get('solution_index', 'SupportController@solutionIndex')->name('admin.support.solution.index');
@@ -102,7 +102,13 @@ Route::group(['middleware' => ['preventBackHistory','admin','web']], function() 
 	    Route::get('error-show', 'SupportController@errorShow')->name('admin.support.error.show');
 	    Route::get('error-resolved/{id}', 'SupportController@resolved')->name('admin.support.error.resolved');
 	    Route::get('error-delete/{id}', 'SupportController@delete')->name('admin.support.error.delete');
-	}); 
+	});
+	Route::group(['prefix' => 'school-detail'], function() {
+	    Route::get('index', 'SchoolDetailsController@index')->name('admin.school.detail.index');
+	    Route::get('add/{id}', 'SchoolDetailsController@edit')->name('admin.school.detail.edit');
+	    Route::post('store/{id}', 'SchoolDetailsController@update')->name('admin.school.detail.update');
+	    Route::get('delete/{id}', 'SchoolDetailsController@destroy')->name('admin.school.detail.delete');
+	});
 
 	
  });
