@@ -66,6 +66,17 @@ class ApiController extends Controller
         }
     }
 
+    public function getvideoClassWise($class_id)
+    {
+       try {
+            $videos = DB::select(DB::raw("SELECT * FROM `videos` where `classType_id` = $class_id;"));
+            return response()->json($videos);
+        } catch (Exception $e) {
+            $e_method = "getvideoClassWise";
+            return MyFuncs::Exception_error_handler($this->e_controller, $e_method, $e->getMessage());
+        }
+    }
+
     public function getvideo($chapter_id)
     {
        try {

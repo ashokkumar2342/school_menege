@@ -17,6 +17,8 @@ Route::get('getschapter/{class_id}/{subject_id}', 'Admin\ApiController@getchapte
 Route::get('getpdf/{chapter_id}', 'Admin\ApiController@getpdf')->name('admin.api.getpdf');
 Route::get('pdf/view/{encryptedPath}', 'Admin\ApiController@securePdfView')->name('admin.common.pdf.view');
 
+Route::get('getvideoClassWise/{class_id}', 'Admin\ApiController@getvideoClassWise')->name('admin.api.getvideoClassWise');
+
 Route::get('getvideo/{chapter_id}', 'Admin\ApiController@getvideo')->name('admin.api.getvideo');
 Route::get('viewvideo/stream/{id}/{token}', 'Admin\ApiController@strem_video')->name('admin.viewvideo.stream');
 

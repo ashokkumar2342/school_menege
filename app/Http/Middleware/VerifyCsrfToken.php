@@ -17,6 +17,7 @@ class VerifyCsrfToken extends Middleware
         'getallsubjects',
         'getsubjectadmin',
         'getschapter',
+        'getvideoClassWise',
         'getvideo',
         'viewvideo/stream',
         'getpdf',
