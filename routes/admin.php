@@ -110,5 +110,10 @@ Route::group(['middleware' => ['preventBackHistory','admin','web']], function() 
 	    Route::get('delete/{id}', 'SchoolDetailsController@destroy')->name('admin.school.detail.delete');
 	});
 
+	Route::group(['prefix' => 'school-activity'], function() {
+	    Route::get('index', 'SchoolActivityController@index')->name('admin.school.activity.index');
+	    Route::post('show', 'SchoolActivityController@show')->name('admin.school.activity.show');
+	});
+
 	
  });
