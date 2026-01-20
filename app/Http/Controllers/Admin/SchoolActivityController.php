@@ -84,15 +84,15 @@ class SchoolActivityController extends Controller
                 $response['data'] =view('admin.schoolActivity.result',compact('rs_result', 'tcols', 'qcols'))->render();
             }
             if ($report_type_id == 2) {
-                $rs_fetch = DB::select(DB::raw("SELECT `school_code` from `admin_school_information` where `url` = '$url' limit 1;"));
-                if (count($rs_fetch) > 0) {
+                $rs_fetch = DB::select(DB::raw("SELECT * from `admin_school_information` where `url` = '$url' limit 1;"));
+                if (count($rs_fetch) == 0) {
                     $response=array();
                     $response['status']=0;
                     $response['msg']='School Detail Not Valid';   
                     return $response;
                 }
                 $school_code = $rs_fetch[0]->code;
-                $rs_result = DB::select(DB::raw("SELECT `query_text`, date_format(`log_date_time`, '%d-%m-%Y' %H:%i) as `log_date` from `log_update_query` where `school_code` = '$school_code';"));
+                $rs_result = DB::select(DB::raw("SELECT `query_text`, date_format(`log_date_time`, '%d-%m-%Y') as `log_date` from `log_update_query` where `school_code` = '$school_code' and  `log_date` >= '$from_date' and `log_date` <= '$to_date' order by `log_date` DESC;"));
                 $tcols = 2;
                 $qcols = array(
                     array('Query',30),
